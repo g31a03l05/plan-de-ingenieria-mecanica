@@ -17,30 +17,42 @@
       margin-bottom: 2rem;
       color: #660000;
     }
-    h2 {
-      color: #880e0e;
-    }
-    .year {
-      margin-bottom: 2.5rem;
-      border-left: 6px solid #880e0e;
-      padding-left: 1rem;
+    .malla-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
     }
     .cuatrimestre {
       display: flex;
-      flex-wrap: wrap;
       gap: 1rem;
-      margin-bottom: 1.5rem;
+      align-items: flex-start;
     }
-    .materia {
-      padding: 1rem;
+    .cuatrimestre > .cuatri-col {
+      min-width: 200px;
+      background-color: #fff0f0;
       border: 2px solid #dcbaba;
       border-radius: 10px;
-      background-color: #fff0f0;
+      padding: 1rem;
+      box-shadow: 2px 2px 6px rgba(160, 0, 0, 0.1);
+      flex: 1;
+    }
+    .cuatri-title {
+      color: #880e0e;
+      text-align: center;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      font-weight: bold;
+    }
+    .materia {
+      padding: 0.5rem;
+      border: 2px solid #dcbaba;
+      border-radius: 6px;
+      background-color: #fff;
+      margin-bottom: 0.5rem;
       cursor: pointer;
       position: relative;
       transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-      flex: 1 1 calc(25% - 1rem);
-      box-shadow: 2px 2px 6px rgba(160, 0, 0, 0.1);
+      font-size: 0.9rem;
     }
     .materia:hover {
       border-color: #b71c1c;
@@ -65,9 +77,9 @@
       padding: 5px;
       position: absolute;
       z-index: 1;
-      bottom: 125%;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 105%;
+      top: 50%;
+      transform: translateY(-50%);
       opacity: 0;
       transition: opacity 0.3s;
       width: max-content;
@@ -77,91 +89,80 @@
       visibility: visible;
       opacity: 1;
     }
-    .cuatrimestre-title {
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-      font-size: 1.1rem;
-      color: #7f0c0c;
-    }
   </style>
 </head>
 <body>
   <h1>Malla Curricular - Ingeniería Mecánica UNLZ</h1>
-  <div id="malla"></div>
-
+  <div class="malla-container" id="malla"></div>
   <script>
     const materias = {
-      'Medios de representación gráfica I': [],
-      'Introduccion a la ingenieria': [],
-      'Inglés': [],
-      'Taller de informática general y aplicada': [],
-      'Medios de representación gráfica II': ['Medios de representación gráfica I'],
-      'Fundamentos de programación informática': ['Taller de informática general y aplicada'],
-      'Higiene y seguridad en el trabajo I': ['Introduccion a la ingenieria'],
-      'Introducción a la gestión del medio ambiente': ['Introduccion a la ingenieria'],
-      'Economía I': ['Introduccion a la ingenieria'],
-      'Matemática I': ['Introduccion a la ingenieria'],
-      'Introducción a la gestión de la innovación y la tecnología': ['Inglés'],
-      'Metrología': ['Medios de representación gráfica II'],
-      'Legislación y ejercicio profesional': ['Higiene y seguridad en el trabajo I'],
-      'Gestión de la calidad': ['Economía I'],
-      'Economía II': ['Economía I'],
-      'Física I': ['Matemática I'],
-      'Matemática II': ['Matemática I'],
-      'Fundamentos de la química': ['Introducción a la gestión del medio ambiente'],
-      'Organizacion y gestion industrial': ['Gestión de la calidad','Economía II'],
-      'Física II': ['Física I'],
-      'Termodinámica': ['Física I','Fundamentos de la química'],
-      'Cálculo I': ['Matemática II'],
-      'Probabilidad y estadística': ['Matemática I'],
-      'Estática y resistencia de los materiales': ['Física I','Medios de representación gráfica II'],
-      'Higiene y seguridad en el trabajo II': ['Medios de representación gráfica II','Física II'],
-      'Cálculo II': ['Cálculo I'],
-      'Mecánica teórica': ['Cálculo I'],
-      'Fundamentos de electrónica': ['Fundamentos de programación informática','Física II'],
-      'Mecánicas de los materiales': ['Estática y resistencia de los materiales'],
-      'Ciencia y tecnología de los materiales': ['Estática y resistencia de los materiales','Fundamentos de la química'],
-      'Electrotecnia': ['Física II'],
-      'Sistema y tecnología para la gestión ambiental': ['Fundamentos de la química','Higiene y seguridad en el trabajo II'],
-      'Mecanismos': ['Mecánica teórica'],
-      'Formulacion gestion y evaluacion de proyectos': ['Organizacion y gestion industrial','Cálculo I'],
-      'Tecnologia del calor': ['Termodinámica'],
-      'Tecnología mecánica': ['Mecánicas de los materiales'],
-      'Mecánica de los fluidos': ['Termodinámica'],
-      'Máquinas e instalaciones eléctricas': ['Electrotecnia'],
-      'Modelado y dinámica de sistemas mecánicos': ['Mecánicas de los materiales','Cálculo II'],
-      'Automatización industrial': ['Mecánica de los fluidos','Electrotecnia'],
-      'Diseño de componentes de máquinas': ['Probabilidad y estadística','Tecnología mecánica','Modelado y dinámica de sistemas mecánicos','Metrología'],
-      'Maquinas termicas': ['Tecnologia del calor'],
-      'Vigilancia tecnológica e inteligencia competitiva': ['Introducción a la gestión de la innovación y la tecnología','Legislación y ejercicio profesional','Tecnología mecánica'],
-      'Instalaciones industriales y mecánicas de almacenaje': ['Mecánica de los fluidos'],
-      'Sistema de control': ['Automatización industrial'],
-      'Tecnologia del frio': ['Tecnologia del calor'],
-      'Gestion e ingenieria del mantenimiento': ['Máquinas e instalaciones eléctricas','Maquinas termicas','Diseño de componentes de máquinas'],
-      'Tecnología de la soldadura': ['Ciencia y tecnología de los materiales'],
-      'Proyecto en ingeniería mecánica': ['Automatización industrial','Formulacion gestion y evaluacion de proyectos','Maquinas termicas','Vigilancia tecnológica e inteligencia competitiva','Instalaciones industriales y mecánicas de almacenaje']
+      "Medios de representación gráfica II": ["Medios de representación gráfica I"],
+      "Fundamentos de programación informática": ["Taller de informática general y aplicada"],
+      "Higiene y seguridad en el trabajo I": ["Introduccion a la ingenieria"],
+      "Introducción a la gestión del medio ambiente": ["Introduccion a la ingenieria"],
+      "Economía I": ["Introduccion a la ingenieria"],
+      "Matemática I": ["Introduccion a la ingenieria"],
+      "Introducción a la gestión de la innovación y la tecnología": ["Inglés"],
+      "Metrología": ["Medios de representación gráfica II"],
+      "Legislación y ejercicio profesional": ["Higiene y seguridad en el trabajo I"],
+      "Gestión de la calidad": ["Economía I"],
+      "Economía II": ["Economía I"],
+      "Física I": ["Matemática I"],
+      "Matemática II": ["Matemática I"],
+      "Fundamentos de la química": ["Introducción a la gestión del medio ambiente"],
+      "Organizacion y gestion industrial": ["Gestión de la calidad", "Economía II"],
+      "Física II": ["Física I"],
+      "Termodinámica": ["Física I", "Fundamentos de la química"],
+      "Cálculo I": ["Matemática II"],
+      "Probabilidad y estadística": ["Matemática I"],
+      "Estática y resistencia de los materiales": ["Física I", "Medios de representación gráfica II"],
+      "Higiene y seguridad en el trabajo II": ["Medios de representación gráfica II", "Física II"],
+      "Cálculo II": ["Cálculo I"],
+      "Mecánica teórica": ["Cálculo I"],
+      "Fundamentos de electrónica": ["Fundamentos de programación informática", "Física II"],
+      "Mecánicas de los materiales": ["Estática y resistencia de los materiales"],
+      "Ciencia y tecnología de los materiales": ["Estática y resistencia de los materiales", "Fundamentos de la química"],
+      "Electrotecnia": ["Física II"],
+      "Sistema y tecnología para la gestión ambiental": ["Fundamentos de la química", "Higiene y seguridad en el trabajo II"],
+      "Mecanismos": ["Mecánica teórica"],
+      "Formulacion gestion y evaluacion de proyectos": ["Organizacion y gestion industrial", "Cálculo I"],
+      "Tecnologia del calor": ["Termodinámica"],
+      "Tecnología mecánica": ["Mecánicas de los materiales"],
+      "Mecánica de los fluidos": ["Termodinámica"],
+      "Máquinas e instalaciones eléctricas": ["Electrotecnia"],
+      "Modelado y dinámica de sistemas mecánicos": ["Mecánicas de los materiales", "Cálculo II"],
+      "Automatización industrial": ["Electrotecnia", "Mecánica de los fluidos"],
+      "Diseño de componentes de máquinas": ["Probabilidad y estadística", "Tecnología mecánica", "Modelado y dinámica de sistemas mecánicos", "Metrología"],
+      "Maquinas termicas": ["Tecnologia del calor"],
+      "Vigilancia tecnológica e inteligencia competitiva": ["Introducción a la gestión de la innovación y la tecnología", "Legislación y ejercicio profesional", "Tecnología mecánica"],
+      "Instalaciones industriales y mecánicas de almacenaje": ["Mecánica de los fluidos"],
+      "Sistema de control": ["Automatización industrial"],
+      "Tecnologia del frio": ["Tecnologia del calor"],
+      "Gestion e ingenieria del mantenimiento": ["Máquinas e instalaciones eléctricas", "Maquinas termicas", "Diseño de componentes de máquinas"],
+      "Tecnología de la soldadura": ["Ciencia y tecnología de los materiales"],
+      "Proyecto en ingeniería mecánica": ["Automatización industrial", "Formulacion gestion y evaluacion de proyectos", "Maquinas termicas", "Vigilancia tecnológica e inteligencia competitiva", "Instalaciones industriales y mecánicas de almacenaje"]
     };
 
     const estructura = [
       [
-        ['Medios de representación gráfica I', 'Introduccion a la ingenieria', 'Inglés', 'Taller de informática general y aplicada'],
-        ['Medios de representación gráfica II', 'Fundamentos de programación informática', 'Higiene y seguridad en el trabajo I', 'Introducción a la gestión del medio ambiente', 'Economía I']
+        ["Medios de representación gráfica I", "Introduccion a la ingenieria", "Inglés", "Taller de informática general y aplicada"],
+        ["Medios de representación gráfica II", "Fundamentos de programación informática", "Higiene y seguridad en el trabajo I", "Introducción a la gestión del medio ambiente", "Economía I"]
       ],
       [
-        ['Matemática I', 'Introducción a la gestión de la innovación y la tecnología', 'Metrología', 'Legislación y ejercicio profesional', 'Gestión de la calidad', 'Economía II'],
-        ['Física I', 'Matemática II', 'Fundamentos de la química', 'Organizacion y gestion industrial']
+        ["Matemática I", "Introducción a la gestión de la innovación y la tecnología", "Metrología", "Legislación y ejercicio profesional", "Gestión de la calidad", "Economía II"],
+        ["Física I", "Matemática II", "Fundamentos de la química", "Organizacion y gestion industrial"]
       ],
       [
-        ['Física II', 'Termodinámica', 'Cálculo I', 'Probabilidad y estadística'],
-        ['Estática y resistencia de los materiales', 'Higiene y seguridad en el trabajo II', 'Cálculo II', 'Mecánica teórica', 'Fundamentos de electrónica']
+        ["Física II", "Termodinámica", "Cálculo I", "Probabilidad y estadística"],
+        ["Estática y resistencia de los materiales", "Higiene y seguridad en el trabajo II", "Cálculo II", "Mecánica teórica", "Fundamentos de electrónica"]
       ],
       [
-        ['Mecánicas de los materiales', 'Ciencia y tecnología de los materiales', 'Electrotecnia', 'Sistema y tecnología para la gestión ambiental', 'Mecanismos', 'Formulacion gestion y evaluacion de proyectos'],
-        ['Tecnologia del calor', 'Tecnología mecánica', 'Mecánica de los fluidos', 'Máquinas e instalaciones eléctricas', 'Modelado y dinámica de sistemas mecánicos']
+        ["Mecánicas de los materiales", "Ciencia y tecnología de los materiales", "Electrotecnia", "Sistema y tecnología para la gestión ambiental", "Mecanismos", "Formulacion gestion y evaluacion de proyectos"],
+        ["Tecnologia del calor", "Tecnología mecánica", "Mecánica de los fluidos", "Máquinas e instalaciones eléctricas", "Modelado y dinámica de sistemas mecánicos"]
       ],
       [
-        ['Automatización industrial', 'Diseño de componentes de máquinas', 'Maquinas termicas', 'Vigilancia tecnológica e inteligencia competitiva', 'Instalaciones industriales y mecánicas de almacenaje'],
-        ['Sistema de control', 'Tecnologia del frio', 'Gestion e ingenieria del mantenimiento', 'Tecnología de la soldadura', 'Proyecto en ingeniería mecánica']
+        ["Automatización industrial", "Diseño de componentes de máquinas", "Maquinas termicas", "Vigilancia tecnológica e inteligencia competitiva", "Instalaciones industriales y mecánicas de almacenaje"],
+        ["Sistema de control", "Tecnologia del frio", "Gestion e ingenieria del mantenimiento", "Tecnología de la soldadura", "Proyecto en ingeniería mecánica"]
       ]
     ];
 
@@ -183,22 +184,20 @@
       const cont = document.getElementById('malla');
       cont.innerHTML = '';
 
-      estructura.forEach((anual, añoIdx) => {
-        const divAño = document.createElement('div');
-        divAño.className = 'year';
-        const titulo = document.createElement('h2');
-        titulo.textContent = `${añoIdx + 1}° Año`;
-        divAño.appendChild(titulo);
+      estructura.forEach((cuatrimestre, idx) => {
+        const fila = document.createElement('div');
+        fila.className = 'cuatrimestre';
 
-        anual.forEach((cuatri, cuatriIdx) => {
-          const divCuatrimestre = document.createElement('div');
-          divCuatrimestre.className = 'cuatrimestre';
-          const label = document.createElement('div');
-          label.className = 'cuatrimestre-title';
-          label.textContent = `${(cuatriIdx === 0 ? '1er' : '2do')} cuatrimestre:`;
-          divAño.appendChild(label);
+        cuatrimestre.forEach((col, colIdx) => {
+          const columna = document.createElement('div');
+          columna.className = 'cuatri-col';
 
-          cuatri.forEach(materia => {
+          const titulo = document.createElement('div');
+          titulo.className = 'cuatri-title';
+          titulo.textContent = `${idx + 1}° Año - ${colIdx === 0 ? '1er' : '2do'} cuatrimestre`;
+          columna.appendChild(titulo);
+
+          col.forEach(materia => {
             const divMateria = document.createElement('div');
             divMateria.className = 'materia';
             const aprobada = estaAprobada(materia);
@@ -224,13 +223,13 @@
               }
             });
 
-            divCuatrimestre.appendChild(divMateria);
+            columna.appendChild(divMateria);
           });
 
-          divAño.appendChild(divCuatrimestre);
+          fila.appendChild(columna);
         });
 
-        cont.appendChild(divAño);
+        cont.appendChild(fila);
       });
     }
 
@@ -238,3 +237,4 @@
   </script>
 </body>
 </html>
+
